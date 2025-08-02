@@ -1,12 +1,14 @@
-import { UserService } from "../services/UserService";
-import { ICreateUserDTO, IUser } from "../@types/UserTypes";
-import { User } from "../models/User";
+import UserService from "../services/UserService";
 
-export class UserController {
-  private userService = new UserService();
-
-  async create(data: ICreateUserDTO): Promise<IUser> {
-    return await this.userService.create(data);
+class UserController {
+  async create(data: { name: string; email: string; password: string }) {
+    try {
+      return await UserService.createUser(data);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   }
 
 }
+
+export default new UserController();

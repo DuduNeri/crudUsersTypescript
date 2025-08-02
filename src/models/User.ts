@@ -1,55 +1,34 @@
+// User.ts
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
+import { IUserAttributes } from "../@types/UserTypes";
 
-export interface IUserAttributes {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+type IUserCreationAttributes = Optional<IUserAttributes, "id" | "createdAt" | "updatedAt">;
 
-export interface IUserCreationAttributes extends Optional<IUserAttributes, "id" | "createdAt" | "updatedAt"> { }
+interface IUserInstance extends Model<IUserAttributes, IUserCreationAttributes>, IUserAttributes {}
 
-export class User extends Model<IUserAttributes, IUserCreationAttributes> implements IUserAttributes {
-  public id!: string;
-  public name!: string;
-  public email!: string;
-  public password!: string;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
-}
-
-User.init(
-  {
-    id: {
+const User = sequelize.define<IUserInstance>("User", {
+   id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-    },
-
-    name: {
+   },
+   name: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    email: {
+   },
+   email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-    },
-    password: {
+   },
+   password: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    modelName: "User",
-    tableName: "users",
-    timestamps: true,
-    defaultScope: {
-      attributes: { exclude: ["password"] },
-    },
-  }
-);
+   },
+}, {
+   tableName: "users",
+   timestamps: true,
+});
+
+export default User;

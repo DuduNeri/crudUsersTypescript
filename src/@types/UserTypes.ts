@@ -1,5 +1,11 @@
-import { IUserAttributes, IUserCreationAttributes } from "../models/User";
+export interface IUserAttributes {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+export type IUserCreateInput = Pick<IUserAttributes, "name" | "email" | "password">;
 
-export type IUser = Omit<IUserAttributes, "password">;
-
-export type ICreateUserDTO = IUserCreationAttributes;
+export type IUserUpdateInput = Partial<IUserCreateInput>;

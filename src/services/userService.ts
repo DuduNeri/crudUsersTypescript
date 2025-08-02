@@ -1,22 +1,21 @@
-import { User } from "../models/User";
-import { ICreateUserDTO, IUser } from "../@types/UserTypes";
-import bcrypt from "bcryptjs";
+import { error } from "console";
+import type { IUserCreateInput } from "../@types/UserTypes";
+import User from "../models/User";
+import bcrypt from 'bcryptjs';
 
-export class UserService {
- async create(data: ICreateUserDTO): Promise<IUser> {
-  const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  const user = await User.create({
-    ...data,
-    password: hashedPassword,
-  });
-
-  const userJson = user.get({ plain: true }) as IUser & { password?: string };
-
-  delete userJson.password;
-
-  return userJson;
+class UserService {
+  async createUser(data: IUserCreateInput) {
+    const existing = await User.findOne({ where: { email: data.email } });
+    if (existing) throw error("Esse email já está em uso!")
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const newUser = await User.create({
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+    });
+    const { password, ...safeUser } = newUser.toJSON();
+    return safeUser;
+  }
 }
-
-
-}
+export default new UserService();
