@@ -1,4 +1,3 @@
-// src/database/index.ts
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 
