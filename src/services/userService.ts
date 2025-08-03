@@ -18,5 +18,14 @@ class UserService {
     const { password, ...safeUser } = newUser.toJSON();
     return safeUser;
   }
+
+  async getUsers(id: string){
+     try {
+      const getUser = await User.findByPk(id);
+      return getUser;
+     }catch(error){
+      return error;
+     } 
+  }
 }
 export default new UserService();
