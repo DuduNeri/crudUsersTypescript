@@ -1,7 +1,7 @@
-import { Router } from "express";
+import express from "express";
 import UserController from "../controllers/UserController";
 
-const router = Router();
+const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
@@ -11,3 +11,5 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 });
+
+export default router;

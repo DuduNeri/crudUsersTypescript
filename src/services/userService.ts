@@ -1,11 +1,11 @@
 import { error } from "console";
-import type { IUserCreateInput } from "../@types/UserTypes";
+import type { IUserAttributes } from "../@types/UserTypes";
 import User from "../models/User";
 import bcrypt from 'bcryptjs';
 
 
 class UserService {
-  async createUser(data: IUserCreateInput) {
+  async createUser(data: IUserAttributes) {
     const existing = await User.findOne({ where: { email: data.email } });
     if (existing) throw error("Esse email já está em uso!")
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -14,6 +14,7 @@ class UserService {
       email: data.email,
       password: hashedPassword,
     });
+   
     const { password, ...safeUser } = newUser.toJSON();
     return safeUser;
   }

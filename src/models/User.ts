@@ -1,7 +1,6 @@
 // User.ts
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
-import { IUserAttributes } from "../@types/UserTypes";
 
 const User = sequelize.define("User", {
    id: {
