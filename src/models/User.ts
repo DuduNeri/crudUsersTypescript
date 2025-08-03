@@ -3,11 +3,7 @@ import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../config/database";
 import { IUserAttributes } from "../@types/UserTypes";
 
-type IUserCreationAttributes = Optional<IUserAttributes, "id" | "createdAt" | "updatedAt">;
-
-interface IUserInstance extends Model<IUserAttributes, IUserCreationAttributes>, IUserAttributes {}
-
-const User = sequelize.define<IUserInstance>("User", {
+const User = sequelize.define("User", {
    id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
