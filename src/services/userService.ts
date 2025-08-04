@@ -37,6 +37,14 @@ class UserService {
       return error;
     }
   }
+  async getAllUsers(data: IUserAttributes){
+    try {
+      const getAll = await User.findAll();
+      return getAll;
+    } catch (error) {
+      return error;
+    }
+  }
 
   async updateUser(id: string, data: IUserAttributes) {
     try {

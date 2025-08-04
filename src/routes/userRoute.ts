@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import UserController from "../controllers/UserController";
+import UserController from "../controllers/userController";
 
 const router = express.Router();
 
@@ -25,6 +25,16 @@ router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
     return res.status(500).json({ error: "Erro desconhecido" });
   }
 });
+
+router.get("/", async(req: Request, res: Response)=>{
+   try {
+    const getAll = await UserController.getAllUsers(req.body);
+    return res.status(200).json(getAll);
+   } catch (error) {
+    console.log("Erro detalhado:", error)
+    return res.status(500).json({ error: "Erro ao buscar usuários" });
+   }
+})
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
