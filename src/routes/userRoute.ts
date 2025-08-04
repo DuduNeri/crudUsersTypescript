@@ -17,9 +17,11 @@ router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
     const data = await UserController.getUsers(req.params);
     return res.status(200).json(data);
   } catch (error) {
+    
     if (error instanceof Error) {
       return res.status(400).json({ error: error.message });
     }
+
     return res.status(500).json({ error: "Erro desconhecido" });
   }
 });
@@ -28,9 +30,11 @@ router.put("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await UserController.updateUser({ id, ...req.body });
+
     if ("error" in result) {
       return res.status(result.status || 400).json({ error: result.error });
     }
+
     return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ error: "Erro na atualização do usuário" });
@@ -39,18 +43,21 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
+
   try {
     const result = await UserController.deleteUser({ id });
-    if(!result){
-      return res.status(404).json({ error: "Usuário não encontrado" });
-    }else{
-      return res.status(200).json({ message: "Usuário deletado com sucesso" });
+
+    if ("error" in result) {
+      return res.status(result.status || 400).json({ error: result.error });
     }
+
+    return res.status(200).json(result); 
   } catch (error) {
-     console.log("Erro detalhado:", error);
-     throw new Error("Erro ao deletar o usuário")
+    console.log("Erro detalhado:", error);
+    return res.status(500).json({ error: "Erro ao deletar o usuário" });
   }
-})
+});
+
 
 
 export default router;
