@@ -1,2 +1,2 @@
 # crudUsersTypescript
-## Um crud simples de usuários, feito com typescript e node Js.
+## Um crud de usuários, feito com typescript e node Js.
